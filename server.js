@@ -6,7 +6,7 @@ const app = express()
 
 //DB connection
 connection()
-const PORT = 3000
+const PORT = 3001
 
 //to access json from request
 app.use(express.json())

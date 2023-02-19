@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -6,9 +7,25 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
-
+  const [role,setRole] = useState("");
+  // <Alert severity="success">nice</Alert>
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(name && email && password && role){
+      axios.post('/register', {
+        name : name,
+        email : email,
+        password : password,
+        role : role
+   })
+   .then((response) => {
+     console.log(response);
+   }, (error) => {
+     console.log(error);
+   });
+    }
+    
+
     console.log(`Email: ${email}, Password: ${password}`);
   };
 
@@ -103,6 +120,16 @@ const Register = () => {
                 value={repassword}
                 onChange={(e) => setRepassword(e.target.value)}
               />
+            </div>
+            <div>
+              <label htmlFor="role" className="sr-only">
+                Role
+              </label>
+              <select name="role" id=""  className="bg-white appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300  text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" onChange={(e) => setRole(e.target.value)}>
+                  
+                  <option value="">student</option>
+                  <option value="">employee</option>
+              </select>
             </div>
           </div>
 
