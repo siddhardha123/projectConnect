@@ -10,16 +10,13 @@ const register = async (req,res) => {
 
     try{
         const {email,name,phone,password,role} = req.body
-        if(!(email && name && phone && password && role)) {
-            res.send("all fields all compulsory")
-        }
         const existingUser = await userModel.findOne({email})
         const phoneNumber = await userModel.findOne({phone})
         if(existingUser){
-           return res.send("user already exists")
+            res.send("user already exists")
         }
         if(phoneNumber){
-           return res.send("number is registered with another account")
+            res.send("number is registered with another account")
         }
         const encrypted =  await bcrypt.hash(password,3)
         const data = new userModel(
@@ -41,7 +38,8 @@ const register = async (req,res) => {
         )
         data.token = token
         data.password = undefined
-        res.send(data)
+        console.log(data)
+        res.send("user successfully registered")
 
     }catch(err){
         console.log(err)
@@ -75,8 +73,8 @@ const login = async (req,res) =>{
                 expires : new Date(Date.now()+3*24*60*60*1000),
                 httpOnly : true
            }
-           res.cookie("token",token,options)
-          return  res.send(user)
+        //    res.cookie("token",token,options)
+          return  res.send("user loggedin")
        }else{
                 res.send("wrong password")
        }
