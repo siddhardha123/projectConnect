@@ -10,8 +10,8 @@ const registerSchema = mongoose.Schema(
             type:String,
 
         },
-        phone : {
-            type : Number,
+        mobile : {
+            type :String,
         },
         password : {
             type : String,

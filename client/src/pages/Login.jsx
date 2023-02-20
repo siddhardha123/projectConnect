@@ -1,12 +1,25 @@
-import React, { useState } from "react";
-import Alert from '@mui/material/Alert'
+import React, { useState,useContext} from "react";
+import axios from "axios";
+import authContext from "../context/authContext";
+import { useNavigate } from 'react-router';
 const Login = () => {
+  const navigate = useNavigate()
+  const updateContext = useContext(authContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(`Email: ${email}, Password: ${password}`);
+    const response = await axios.post('http://localhost:3002/api/v1/login', {
+        email : email,
+        password : password,
+   })
+     console.log(response.data)
+     updateContext.login = true
+     updateContext.data = {"email":email}
+     navigate("/dashboard")
+     console.log(updateContext)
+
   };
 
   return (

@@ -9,21 +9,31 @@ const welcome = (req,res) =>{
 const register = async (req,res) => {
 
     try{
-        const {email,name,phone,password,role} = req.body
+        let message
+        const {email,name,mobile,password,role} = req.body
         const existingUser = await userModel.findOne({email})
-        const phoneNumber = await userModel.findOne({phone})
-        if(existingUser){
-            res.send("user already exists")
+        const phoneNumber = await userModel.findOne({mobile})
+        if(phoneNumber || existingUser){
+            let message
+            if(phoneNumber){
+                message = "phone number exists" 
+            }else{
+                message = "user already exists"
+            }
+            const pack = {
+                "data" : {},
+                "message" : message
+            }
+            console.log(pack)
+            res.send(pack)
         }
-        if(phoneNumber){
-            res.send("number is registered with another account")
-        }
-        const encrypted =  await bcrypt.hash(password,3)
+        else{
+            const encrypted =  await bcrypt.hash(password,3)
         const data = new userModel(
             {
                 email : email,
                 name : name,
-                phone : phone,
+                mobile : mobile,
                 password : encrypted,
                 role : role,
             }
@@ -38,9 +48,15 @@ const register = async (req,res) => {
         )
         data.token = token
         data.password = undefined
-        console.log(data)
-        res.send("user successfully registered")
-
+        message = "user is successfully registered"
+        const pack = {
+            "data" : data,
+            "message" : message
+        }
+           console.log(pack)
+           res.send(pack)
+        }
+    
     }catch(err){
         console.log(err)
     }
@@ -74,7 +90,7 @@ const login = async (req,res) =>{
                 httpOnly : true
            }
         //    res.cookie("token",token,options)
-          return  res.send("user loggedin")
+              res.send("user loggedin")
        }else{
                 res.send("wrong password")
        }

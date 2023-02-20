@@ -6,23 +6,32 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from './PrivateRoute'
+import AuthState from "./context/authState";
 
 function App() {
   
   return (
     <>
+      
       <div>
-     
-        <Header />
+      {/* <PrivateRoute> */}
+      <AuthState>
+        
         <BrowserRouter>
+           <Header />
           <Routes>
+          
+            <Route element={<PrivateRoute />}>
+              <Route path="/dashboard" element={<Dashboard/>}/>
+            </Route>
             <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Register />} />
           </Routes>
         </BrowserRouter>
+        </AuthState>
       </div>
+     
     </>
   );
 }

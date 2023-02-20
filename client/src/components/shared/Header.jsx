@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 
 const data = [
      {
@@ -11,9 +11,10 @@ const data = [
         "link" : "/"
      },
      {
-        "name" : "Home",
-        "link" : "/"
+        "name" : "Dashboard",
+        "link" : "/dashboard"
      },
+     
      {
         "name" : "Sign Up",
         "link" : "/signup"
@@ -25,7 +26,7 @@ const Header = () => {
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-
+  
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -79,7 +80,7 @@ const Header = () => {
             </div>
             <div className="hidden md:flex ml-auto">
                   {data.map((data)=>(
-                        <div className=" px-9 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"><a href={data.link}>{data.name}</a></div>
+                        <div className=" px-9 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"><Link to={data.link}>{data.name}</Link></div>
                   ))}
             </div>
           </div>
@@ -88,7 +89,7 @@ const Header = () => {
         {/* Mobile menu, show/hide based on menu state. */}
         {isOpen && <div className="md:hidden">
                 {data.map((data)=>(
-                        <div className="text-center px-9 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"><a href={data.link}>{data.name}</a></div>
+                        <div className="text-center px-9 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"><Link to={data.link}>{data.name}</Link></div>
                   ))}
         </div>}
         

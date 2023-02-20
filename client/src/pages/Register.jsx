@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { useNavigate } from "react-router";
 import { Alert } from "@mui/material";
 import axios from 'axios'
+import authContext from "../context/authContext";
 const Register = () => {
+
+  const updateContext = useContext(authContext)
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
@@ -21,14 +24,12 @@ const Register = () => {
         password : password,
         role : role
    })
-   {response.data.name ? setError(response.data.name) : setError(response.data) }
-   
-    
-    
-    
-    
-   
-
+        console.log(response)
+        console.log(response.data.data)
+        updateContext.data = response.data.data
+        updateContext.login = true;
+        console.log(updateContext)
+        navigate("/dashboard")
   };
 
   return (
