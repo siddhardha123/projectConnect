@@ -1,24 +1,23 @@
 import React from 'react'
 import authContext from '../context/authContext'
-import { useNavigate } from 'react-router'
 import { useContext } from 'react'
+import SecondaryNavbar from '../components/shared/SecondaryNav'
 const Dashboard = () => {
   const updateContext = useContext(authContext)
-  const navigate = useNavigate()
-  const logout = () =>{
-       updateContext.login = false
-       console.log(updateContext)
-       navigate("/")
-  }
+
   return (
-    <>  
-       <div>
-             <p className='text-6xl text-black'>welcome to dash board {updateContext.data.email}</p>
-             <button className='p-2 text-2xl' onClick={logout}>Logout</button>
-       </div>
-    
+  <>
+
+    <SecondaryNavbar />
+    <div className=' mt-5'>
+      <div className='flex justify-between px-5'>
+        <p className='text-6xl text-black'>welcome to dash board {updateContext.data.name}</p>
+        
+      </div>
+
+    </div>
     </>
   )
 }
 
-export default Dashboard
+export default Dashboard;

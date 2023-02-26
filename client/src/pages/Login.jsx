@@ -1,33 +1,45 @@
 import React, { useState,useContext} from "react";
-import axios from "axios";
+import { Alert } from "@mui/material";
 import authContext from "../context/authContext";
+import loginsvg from '../assets/loginsvg.svg'
 import { useNavigate } from 'react-router';
 const Login = () => {
   const navigate = useNavigate()
   const updateContext = useContext(authContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [error,setError] = useState("")
+ 
+  
   const handleSubmit = async(event) => {
     event.preventDefault();
-    const response = await axios.post('http://localhost:3002/api/v1/login', {
-        email : email,
-        password : password,
-   })
-     console.log(response.data)
-     updateContext.login = true
-     updateContext.data = {"email":email}
-     navigate("/dashboard")
-     console.log(updateContext)
+    const response = await fetch('http://localhost:3002/api/v1/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
+     if(response.ok){
+      const { token } = await response.json();
+      updateContext.login = true
+      updateContext.data = {"email":email}
+      navigate("/dashboard")
+      console.log(updateContext)
+     }else{
+      const { message } = await response.json();
+      setError(message);
+     }
+    
   };
 
   return (
       <>
-       <div className="mt-10 md:mt-28 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+       <div className="mt-10 md:mt-12 md:flex items-center justify-around bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+       <img src={loginsvg} alt=""  className="md:max-w-lg"/>
       <div className="max-w-md w-full space-y-8">
+  
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-10 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
         </div>
@@ -99,6 +111,7 @@ const Login = () => {
               <a href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
                 dont have an account ? register
               </a>
+              {error && <Alert severity="error" >{error}</Alert>}
             </div>
           </div>
         </form>
